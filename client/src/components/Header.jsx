@@ -47,14 +47,7 @@ export default function Header() {
           </button>
         </form>
         <ul className='flex gap-4'>
-          <Link to='/'>
-            <li /*className='hidden sm:inline text-slate-700 hover:underline'*/>
-              <button className='bg-transparent hover:bg-slate-500 text-slate-700 font-semibold hover:text-white py-1 px-4 border border-slate-700 hover:border-transparent rounded'>
-                Sell
-              </button>
-              
-            </li>
-          </Link>
+          
           <Link to='/'>
             <li className='hidden sm:inline text-slate-700 hover:underline'>
               Home
