@@ -14,6 +14,16 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    condition: {
+      type: String, // New field for condition (new or used)
+      required: true,
+      enum: ['new', 'used'], // Condition should be either 'new' or 'used'
+    },
+    category: {
+      type: String, // New field for category (books or electronics)
+      required: true,
+      enum: ['books', 'electronics', 'furniture'], // Category should be either 'books' or 'electronics'
+    },
     regularPrice: {
       type: Number,
       required: true,
@@ -22,32 +32,12 @@ const listingSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    bathrooms: {
-      type: Number,
-      required: true,
-    },
-    bedrooms: {
-      type: Number,
-      required: true,
-    },
-    furnished: {
-      type: Boolean,
-      required: true,
-    },
-    parking: {
-      type: Boolean,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: true,
-    },
     offer: {
       type: Boolean,
       required: true,
     },
     imageUrls: {
-      type: Array,
+      type: [String], // Array of image URLs
       required: true,
     },
     userRef: {

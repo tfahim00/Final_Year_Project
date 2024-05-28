@@ -62,47 +62,47 @@ export const getListing = async (req, res, next) => {
   }
 };
 
+
+
+
 export const getListings = async (req, res, next) => {
   try {
     const limit = parseInt(req.query.limit) || 9;
     const startIndex = parseInt(req.query.startIndex) || 0;
     let offer = req.query.offer;
 
-    if (offer === undefined || offer === 'false') {
+    if (offer === 'true') {
+      offer = true;
+    } else if (offer === 'false') {
       offer = { $in: [false, true] };
+    } else {
+      offer = { $in: [false, true] }; // Default to include both offer and non-offer listings
     }
 
-    let furnished = req.query.furnished;
+    let condition = req.query.condition;
 
-    if (furnished === undefined || furnished === 'false') {
-      furnished = { $in: [false, true] };
-    }
-
-    let parking = req.query.parking;
-
-    if (parking === undefined || parking === 'false') {
-      parking = { $in: [false, true] };
-    }
-
-    let type = req.query.type;
-
-    if (type === undefined || type === 'all') {
-      type = { $in: ['sale', 'rent'] };
+    if (condition === undefined || condition === 'all') {
+      condition = { $in: ['new', 'used'] };
     }
 
     const searchTerm = req.query.searchTerm || '';
+    const category = req.query.category || '';
 
     const sort = req.query.sort || 'createdAt';
-
     const order = req.query.order || 'desc';
 
-    const listings = await Listing.find({
+    // Construct query based on category
+    const query = {
       name: { $regex: searchTerm, $options: 'i' },
       offer,
-      furnished,
-      parking,
-      type,
-    })
+      condition,
+    };
+
+    if (category) {
+      query.category = category;
+    }
+
+    const listings = await Listing.find(query)
       .sort({ [sort]: order })
       .limit(limit)
       .skip(startIndex);

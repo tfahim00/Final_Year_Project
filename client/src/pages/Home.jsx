@@ -7,25 +7,51 @@ import 'swiper/css/bundle';
 import ListingItem from '../components/ListingItem';
 
 export default function Home() {
-  const [offerListings, setOfferListings] = useState([]);
-  const [saleListings, setSaleListings] = useState([]);
-  const [rentListings, setRentListings] = useState([]);
+  const [bookListings, setBookListings] = useState([]);
+  const [electronicsListings, setElectronicsListings] = useState([]);
+  const [furnitureListings, setFurnitureListings] = useState([]);
+  const [bookOfferListings, setBookOfferListings] = useState([]);
+  const [electronicsOfferListings, setElectronicsOfferListings] = useState([]);
+  const [furnitureOfferListings, setFurnitureOfferListings] = useState([]);
+  
   SwiperCore.use([Navigation]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const offerRes = await fetch('/api/listing/get?offer=true&limit=4');
-        const offerData = await offerRes.json();
-        setOfferListings(offerData);
+        // Fetch data for books
+        const bookRes = await fetch('/api/listing/get?category=books&limit=4');
+        const bookData = await bookRes.json();
+        console.log("Book Data:", bookData);
 
-        const saleRes = await fetch('/api/listing/get?type=sale&limit=4');
-        const saleData = await saleRes.json();
-        setSaleListings(saleData);
+        setBookListings(bookData);
 
-        const rentRes = await fetch('/api/listing/get?type=rent&limit=4');
-        const rentData = await rentRes.json();
-        setRentListings(rentData);
+        // Fetch data for electronics
+        const electronicsRes = await fetch('/api/listing/get?category=electronics&limit=4');
+        const electronicsData = await electronicsRes.json();
+        console.log("Electronics Data:", electronicsData);
+
+        setElectronicsListings(electronicsData);
+
+        // Fetch data for furniture
+        const furnitureRes = await fetch('/api/listing/get?category=furniture&limit=4');
+        const furnitureData = await furnitureRes.json();
+        setFurnitureListings(furnitureData);
+
+        // Fetch offer listings for books
+        const bookOfferRes = await fetch('/api/listing/get?category=books&offer=true&limit=4');
+        const bookOfferData = await bookOfferRes.json();
+        setBookOfferListings(bookOfferData);
+
+        // Fetch offer listings for electronics
+        const electronicsOfferRes = await fetch('/api/listing/get?category=electronics&offer=true&limit=4');
+        const electronicsOfferData = await electronicsOfferRes.json();
+        setElectronicsOfferListings(electronicsOfferData);
+
+        // Fetch offer listings for furniture
+        const furnitureOfferRes = await fetch('/api/listing/get?category=furniture&offer=true&limit=4');
+        const furnitureOfferData = await furnitureOfferRes.json();
+        setFurnitureOfferListings(furnitureOfferData);
       } catch (error) {
         console.log(error);
       }
@@ -35,107 +61,142 @@ export default function Home() {
 
   return (
     <div>
-      {/* top */}
-      <div className='flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto'>
-        <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>
-          Find your next <span className='text-slate-500'>book</span>
-          <br />
-          with ease
-        </h1>
-        <div className='text-gray-400 text-xs sm:text-sm'>
-          OKexchange is the best place to buy/sell your next book.
-          <br />
-          We have a wide range of books for you to choose from.
-          <br />
-          OkExchange: Where Preloved Pages Find Fresh Beginnings.
-        </div>
 
-        <Link
-          to={'/search'}
-          className='text-xs sm:text-sm text-blue-800 font-bold hover:underline'
-        >
-          Let's get started...
-        </Link>
-      </div>
-
-      {/* Image Slider */}
-      <Swiper navigation>
-        {offerListings &&
-          offerListings.map(listing => (
-            <SwiperSlide key={listing._id}>
-              <div
-                style={{
-                  background: `url(${listing.imageUrls[0]}) center no-repeat`,
-                  backgroundSize: 'cover',
-                }}
-                className='h-[500px]'
-              ></div>
-            </SwiperSlide>
-          ))}
-      </Swiper>
-
-      {/* listing results for offer, sale and rent */}
+      {/* Offer Listings for Books */}
       <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
-        {/* Offer Listings */}
-        {offerListings && offerListings.length > 0 && (
+        {bookOfferListings && bookOfferListings.length > 0 && (
           <div className=''>
             <div className='my-3'>
               <h2 className='text-2xl font-semibold text-slate-600'>
-                Recent offers
+                Offers for Books
               </h2>
               <Link
                 className='text-sm text-blue-800 hover:underline'
-                to={'/search?offer=true'}
+                to={'/search?offer=true&type=book'}
               >
-                Show more offers
+                See more offers
               </Link>
             </div>
             <div className='flex flex-wrap gap-4'>
-              {offerListings.map(listing => (
+              {bookOfferListings.map(listing => (
                 <ListingItem listing={listing} key={listing._id} />
               ))}
             </div>
           </div>
         )}
 
-        {/* Sale Listings */}
-        {saleListings && saleListings.length > 0 && (
+        {/* Sale Listings for Books */}
+        {bookListings && bookListings.length > 0 && (
           <div className=''>
             <div className='my-3'>
               <h2 className='text-2xl font-semibold text-slate-600'>
-                Recent places for sale
+                Books for Sale
+              </h2>
+              <Link
+                className='text-sm text-blue-800 hover:underline'
+                to={'/search?'}
+              >
+                See more books
+              </Link>
+            </div>
+            <div className='flex flex-wrap gap-4'>
+              {bookListings.map(listing => (
+                <ListingItem listing={listing} key={listing._id} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      
+
+      {/* Offer Listings for Electronics */}
+      <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
+        {electronicsOfferListings && electronicsOfferListings.length > 0 && (
+          <div className=''>
+            <div className='my-3'>
+              <h2 className='text-2xl font-semibold text-slate-600'>
+                Offers for Electronics
+              </h2>
+              <Link
+                className='text-sm text-blue-800 hover:underline'
+                to={'/search?offer=true&type=electronics'}
+              >
+                See more offers
+              </Link>
+            </div>
+            <div className='flex flex-wrap gap-4'>
+              {electronicsOfferListings.map(listing => (
+                <ListingItem listing={listing} key={listing._id} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Sale Listings for Electronics */}
+        {electronicsListings && electronicsListings.length > 0 && (
+          <div className=''>
+            <div className='my-3'>
+              <h2 className='text-2xl font-semibold text-slate-600'>
+                Electronics for Sale
+              </h2>
+              <Link
+                className='text-sm text-blue-800 hover:underline'
+                to={'/search?type=electronics'}
+              >
+                See more electronics
+              </Link>
+            </div>
+            <div className='flex flex-wrap gap-4'>
+              {electronicsListings.map(listing => (
+                <ListingItem listing={listing} key={listing._id} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      
+
+      {/* Offer Listings for Furniture */}
+      <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
+        {furnitureOfferListings && furnitureOfferListings.length > 0 && (
+          <div className=''>
+            <div className='my-3'>
+              <h2 className='text-2xl font-semibold text-slate-600'>
+                Offers for Furniture
+              </h2>
+              <Link
+                className='text-sm text-blue-800 hover:underline'
+                to={'/search?offer=true&type=furniture'}
+              >
+                See more offers
+              </Link>
+            </div>
+            <div className='flex flex-wrap gap-4'>
+              {furnitureOfferListings.map(listing => (
+                <ListingItem listing={listing} key={listing._id} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Sale Listings for Furniture */}
+        {furnitureListings && furnitureListings.length > 0 && (
+          <div className=''>
+            <div className='my-3'>
+              <h2 className='text-2xl font-semibold text-slate-600'>
+                Furniture for Sale
               </h2>
               <Link
                 className='text-sm text-blue-800 hover:underline'
                 to={'/search?type=sale'}
               >
-                Show more places for sale
+                See more furniture
               </Link>
             </div>
             <div className='flex flex-wrap gap-4'>
-              {saleListings.map(listing => (
-                <ListingItem listing={listing} key={listing._id} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Rent Listings */}
-        {rentListings && rentListings.length > 0 && (
-          <div className=''>
-            <div className='my-3'>
-              <h2 className='text-2xl font-semibold text-slate-600'>
-                Recent places for rent
-              </h2>
-              <Link
-                className='text-sm text-blue-800 hover:underline'
-                to={'/search?type=rent'}
-              >
-                Show more places for rent
-              </Link>
-            </div>
-            <div className='flex flex-wrap gap-4'>
-              {rentListings.map(listing => (
+              {furnitureListings.map(listing => (
                 <ListingItem listing={listing} key={listing._id} />
               ))}
             </div>

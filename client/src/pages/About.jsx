@@ -3,12 +3,15 @@ import React from 'react'
 export default function About() {
   return (
     <div className='py-20 px-4 max-w-6xl mx-auto'>
-      <h1 className='text-3xl font-bold mb-4 text-slate-800'>About Sahand Estate</h1>
-      <p className='mb-4 text-slate-700'>Sahand Estate is a leading real estate agency that specializes in helping clients buy, sell, and rent properties in the most desirable neighborhoods. Our team of experienced agents is dedicated to providing exceptional service and making the buying and selling process as smooth as possible.</p>
-      <p className='mb-4 text-slate-700'>
-      Our mission is to help our clients achieve their real estate goals by providing expert advice, personalized service, and a deep understanding of the local market. Whether you are looking to buy, sell, or rent a property, we are here to help you every step of the way.
-      </p>
-      <p className='mb-4 text-slate-700'>Our team of agents has a wealth of experience and knowledge in the real estate industry, and we are committed to providing the highest level of service to our clients. We believe that buying or selling a property should be an exciting and rewarding experience, and we are dedicated to making that a reality for each and every one of our clients.</p>
+      <h1 className='text-3xl font-bold mb-4 text-slate-800'>About OkExchange</h1>
+      <p className='mb-4 text-slate-700'>At OkExchange, we specialize in providing a platform for buying, selling, and trading pre-owned items across a wide range of categories. Our dedicated team of sellers and buyers is committed to delivering exceptional service and ensuring a seamless experience for all our users.</p>
+
+Our mission is to connect individuals looking to buy or sell second-hand products with ease and convenience. With our user-friendly platform and extensive listings, we strive to help our customers achieve their goals of finding quality second-hand items or giving their pre-loved possessions a new home.
+
+
+
+We believe that the exchange of second-hand goods should be a positive and rewarding experience for both buyers and sellers alike. With our commitment to integrity, transparency, and customer satisfaction, we aim to make your second-hand shopping journey enjoyable and fulfilling
+      
     </div>
   )
 }

@@ -7,11 +7,8 @@ export default function Search() {
   const [sidebardata, setSidebardata] = useState({
     searchTerm: '',
     type: 'all',
-    parking: false,
-    furnished: false,
+    condition: 'all',
     offer: false,
-    sort: 'created_at',
-    order: 'desc',
   });
 
   const [loading, setLoading] = useState(false);
@@ -22,29 +19,20 @@ export default function Search() {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get('searchTerm');
     const typeFromUrl = urlParams.get('type');
-    const parkingFromUrl = urlParams.get('parking');
-    const furnishedFromUrl = urlParams.get('furnished');
+    const conditionFromUrl = urlParams.get('condition');
     const offerFromUrl = urlParams.get('offer');
-    const sortFromUrl = urlParams.get('sort');
-    const orderFromUrl = urlParams.get('order');
 
     if (
       searchTermFromUrl ||
       typeFromUrl ||
-      parkingFromUrl ||
-      furnishedFromUrl ||
-      offerFromUrl ||
-      sortFromUrl ||
-      orderFromUrl
+      conditionFromUrl ||
+      offerFromUrl
     ) {
       setSidebardata({
         searchTerm: searchTermFromUrl || '',
         type: typeFromUrl || 'all',
-        parking: parkingFromUrl === 'true' ? true : false,
-        furnished: furnishedFromUrl === 'true' ? true : false,
-        offer: offerFromUrl === 'true' ? true : false,
-        sort: sortFromUrl || 'created_at',
-        order: orderFromUrl || 'desc',
+        condition: conditionFromUrl || 'all',
+        offer: offerFromUrl === 'true',
       });
     }
 
@@ -67,36 +55,18 @@ export default function Search() {
   }, [location.search]);
 
   const handleChange = (e) => {
-    if (
-      e.target.id === 'all' ||
-      e.target.id === 'rent' ||
-      e.target.id === 'sale'
-    ) {
-      setSidebardata({ ...sidebardata, type: e.target.id });
-    }
+    const { name, value, type, checked } = e.target;
 
-    if (e.target.id === 'searchTerm') {
-      setSidebardata({ ...sidebardata, searchTerm: e.target.value });
-    }
-
-    if (
-      e.target.id === 'parking' ||
-      e.target.id === 'furnished' ||
-      e.target.id === 'offer'
-    ) {
+    if (type === 'checkbox') {
       setSidebardata({
         ...sidebardata,
-        [e.target.id]:
-          e.target.checked || e.target.checked === 'true' ? true : false,
+        [name]: checked,
       });
-    }
-
-    if (e.target.id === 'sort_order') {
-      const sort = e.target.value.split('_')[0] || 'created_at';
-
-      const order = e.target.value.split('_')[1] || 'desc';
-
-      setSidebardata({ ...sidebardata, sort, order });
+    } else if (type === 'radio') {
+      setSidebardata({
+        ...sidebardata,
+        [name]: value,
+      });
     }
   };
 
@@ -105,11 +75,8 @@ export default function Search() {
     const urlParams = new URLSearchParams();
     urlParams.set('searchTerm', sidebardata.searchTerm);
     urlParams.set('type', sidebardata.type);
-    urlParams.set('parking', sidebardata.parking);
-    urlParams.set('furnished', sidebardata.furnished);
+    urlParams.set('condition', sidebardata.condition);
     urlParams.set('offer', sidebardata.offer);
-    urlParams.set('sort', sidebardata.sort);
-    urlParams.set('order', sidebardata.order);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
@@ -127,6 +94,7 @@ export default function Search() {
     }
     setListings([...listings, ...data]);
   };
+
   return (
     <div className='flex flex-col md:flex-row'>
       <div className='p-7  border-b-2 md:border-r-2 md:min-h-screen'>
@@ -137,7 +105,7 @@ export default function Search() {
             </label>
             <input
               type='text'
-              id='searchTerm'
+              name='searchTerm'
               placeholder='Search...'
               className='border rounded-lg p-3 w-full'
               value={sidebardata.searchTerm}
@@ -148,81 +116,94 @@ export default function Search() {
             <label className='font-semibold'>Type:</label>
             <div className='flex gap-2'>
               <input
-                type='checkbox'
+                type='radio'
                 id='all'
-                className='w-5'
+                name='type'
+                value='all'
                 onChange={handleChange}
                 checked={sidebardata.type === 'all'}
               />
-              <span>Rent & Sale</span>
+              <span>All</span>
             </div>
             <div className='flex gap-2'>
               <input
-                type='checkbox'
-                id='rent'
-                className='w-5'
+                type='radio'
+                id='electronics'
+                name='type'
+                value='electronics'
                 onChange={handleChange}
-                checked={sidebardata.type === 'rent'}
+                checked={sidebardata.type === 'electronics'}
               />
-              <span>Rent</span>
+              <span>Electronics</span>
             </div>
             <div className='flex gap-2'>
               <input
-                type='checkbox'
-                id='sale'
-                className='w-5'
+                type='radio'
+                id='books'
+                name='type'
+                value='books'
                 onChange={handleChange}
-                checked={sidebardata.type === 'sale'}
+                checked={sidebardata.type === 'books'}
               />
-              <span>Sale</span>
+              <span>Books</span>
             </div>
             <div className='flex gap-2'>
               <input
-                type='checkbox'
-                id='offer'
-                className='w-5'
+                type='radio'
+                id='furniture'
+                name='type'
+                value='furniture'
                 onChange={handleChange}
-                checked={sidebardata.offer}
+                checked={sidebardata.type === 'furniture'}
               />
-              <span>Offer</span>
+              <span>Furniture</span>
             </div>
           </div>
           <div className='flex gap-2 flex-wrap items-center'>
-            <label className='font-semibold'>Amenities:</label>
+            <label className='font-semibold'>Condition:</label>
             <div className='flex gap-2'>
               <input
-                type='checkbox'
-                id='parking'
-                className='w-5'
+                type='radio'
+                id='all'
+                name='condition'
+                value='all'
                 onChange={handleChange}
-                checked={sidebardata.parking}
+                checked={sidebardata.condition === 'all'}
               />
-              <span>Parking</span>
+              <span>All</span>
             </div>
             <div className='flex gap-2'>
               <input
-                type='checkbox'
-                id='furnished'
-                className='w-5'
+                type='radio'
+                id='new'
+                name='condition'
+                value='new'
                 onChange={handleChange}
-                checked={sidebardata.furnished}
+                checked={sidebardata.condition === 'new'}
               />
-              <span>Furnished</span>
+              <span>New</span>
+            </div>
+            <div className='flex gap-2'>
+              <input
+                type='radio'
+                id='used'
+                name='condition'
+                value='used'
+                onChange={handleChange}
+                checked={sidebardata.condition === 'used'}
+              />
+              <span>Used</span>
             </div>
           </div>
-          <div className='flex items-center gap-2'>
-            <label className='font-semibold'>Sort:</label>
-            <select
+          <div className='flex gap-2'>
+            <input
+              type='checkbox'
+              id='offer'
+              name='offer'
               onChange={handleChange}
-              defaultValue={'created_at_desc'}
-              id='sort_order'
-              className='border rounded-lg p-3'
-            >
-              <option value='regularPrice_desc'>Price high to low</option>
-              <option value='regularPrice_asc'>Price low to hight</option>
-              <option value='createdAt_desc'>Latest</option>
-              <option value='createdAt_asc'>Oldest</option>
-            </select>
+              checked={sidebardata.offer}
+            />
+            <label htmlFor='offer'>Offer</label>
           </div>
           <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95'>
             Search
